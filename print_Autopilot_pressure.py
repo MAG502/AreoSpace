@@ -1,22 +1,46 @@
 from pymavlink import mavutil
-import time
 
-master = mavutil.mavlink_connection('udp:127.0.0.1:14550')
+master = mavutil.mavlink_connection('tcp:127.0.0.1:5763')
 # master = mavutil.mavlink_connection('/dev/tty.usbmodem01')
+
+print("No Heartbeat yet!!")
 
 master.wait_heartbeat()
 
-end_time = time.time() + 10
-seen = {}
+print("Got Heartbeat!!\n")
+
+master.mav.request_data_stream_send(
+    master.target_system,
+    master.target_component,
+    mavutil.mavlink.MAV_DATA_STREAM_ALL,
+    4,
+    1
+)
+
 number_of_sensors = 0
-while time.time() < end_time:
-    msg = master.recv_match(blocking=True, timeout=1)
-    
-    if msg:
-        msg_type = msg.get_type()
-        
-        if msg_type in ['SCALED_PRESSURE', 'SCALED_PRESSURE2', 'SCALED_PRESSURE3'] and msg_type not in seen:
-            print(f'Sensor {msg_type.replace("SCALED_","")} dedicated')
-            seen[msg_type] = True
-            number_of_sensors += 1
-print(number_of_sensors, 'Sensors Dedicated' if number_of_sensors > 1 else 'Sensor Dedicated')
+msg_pressure1 = master.recv_match(type=['SCALED_PRESSURE'], blocking=True, timeout=1)
+msg_pressure2 = master.recv_match(type=['SCALED_PRESSURE2'], blocking=True, timeout=1)
+msg_pressure3 = master.recv_match(type=['SCALED_PRESSURE3'], blocking=True, timeout=1)
+
+
+msg1, msg2, msg3 = "", "", ""
+if msg_pressure1:    
+    msg1 = f'Sensor {msg_pressure1.msgname.replace("SCALED_","")} dedicated'
+    number_of_sensors += 1
+
+if msg_pressure2:    
+    msg2 = f'\nSensor {msg_pressure2.msgname.replace("SCALED_","")} dedicated'
+    number_of_sensors += 1
+
+if msg_pressure3:    
+    msg3 = f'\nSensor {msg_pressure3.msgname.replace("SCALED_","")} dedicated'
+    number_of_sensors += 1
+
+print(msg1 + msg2 + msg3)
+
+if number_of_sensors > 1 or number_of_sensors == 0:
+    result = f'{number_of_sensors} Sensors Dedicated'
+else:
+    result = f'{number_of_sensors} Sensor Dedicated'
+
+print(result)
