@@ -3,7 +3,7 @@ from pymavlink import mavutil
 
 master = mavutil.mavlink_connection('tcp:127.0.0.1:5763')
 
-print(master.wait_heartbeat())
+#print(master.wait_heartbeat())
 
 autopilot_value = master.messages['HEARTBEAT'].autopilot
 
