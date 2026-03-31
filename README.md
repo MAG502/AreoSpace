@@ -8,3 +8,6 @@ this file tells us how many pressure sensors are Dedicated.
 
 File: print_num_of_imu.py
 this file tells us how many imu sensors are dedicted.
+
+File: print_num_of_gps.py
+this file tells us how many gps are dedicted.
