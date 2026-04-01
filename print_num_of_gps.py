@@ -3,7 +3,7 @@ from pymavlink import mavutil
 master = mavutil.mavlink_connection('tcp:127.0.0.1:5763')
 
 master.wait_heartbeat()
-print('Got Heartbeat\n')
+print('Got Heartbeat.\n')
 
 master.mav.command_long_send(
     master.target_system,

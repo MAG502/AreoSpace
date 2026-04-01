@@ -3,7 +3,7 @@ from pymavlink import mavutil
 master = mavutil.mavlink_connection('udp:127.0.0.1:14550')
 
 master.wait_heartbeat()
-print('Got Heartbeat\n')
+print('Got Heartbeat.\n')
 
 master.mav.command_long_send(
     master.target_system,
@@ -23,16 +23,16 @@ number_of_senesors = 0
 
 pr1, pr2, pr3 = "", "", ""
 if imu_senesor_values:
-    pr1 = f'Sensor {imu_senesor_values.msgname.replace("SCALED_", "")} dedicated'
+    pr1 = f'Sensor {imu_senesor_values.msgname.replace("SCALED_", "")} dedecated'
     number_of_senesors += 1
 
 if imu_senesor_values2:
-    pr2 = f'\nSensor {imu_senesor_values2.msgname.replace("SCALED_", "")} dedicated'
+    pr2 = f'\nSensor {imu_senesor_values2.msgname.replace("SCALED_", "")} dedecated'
     number_of_senesors += 1
     
 if imu_senesor_values3:
-    pr3 = f'\nSensor {imu_senesor_values3.msgname.replace("SCALED_", "")} dedicated'
+    pr3 = f'\nSensor {imu_senesor_values3.msgname.replace("SCALED_", "")} dedecated'
     number_of_senesors += 1
 
 print(pr1 + pr2 + pr3)
-print(f'The Number Of Senesors Dedicated: {number_of_senesors}')
+print(f'The Number Of Senesors Dedecated: {number_of_senesors}')

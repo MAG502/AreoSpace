@@ -1,7 +1,7 @@
 from pymavlink import mavutil
 
-master = mavutil.mavlink_connection('tcp:127.0.0.1:5763')
-# master = mavutil.mavlink_connection('/dev/tty.usbmodem01')
+# master = mavutil.mavlink_connection('tcp:127.0.0.1:5763')
+master = mavutil.mavlink_connection('/dev/tty.usbmodem01')
 
 print("No Heartbeat yet!!")
 
@@ -25,22 +25,22 @@ msg_pressure3 = master.recv_match(type=['SCALED_PRESSURE3'], blocking=True, time
 
 msg1, msg2, msg3 = "", "", ""
 if msg_pressure1:    
-    msg1 = f'Sensor {msg_pressure1.msgname.replace("SCALED_","")} dedicated'
+    msg1 = f'Sensor {msg_pressure1.msgname.replace("SCALED_","")} dedecated'
     number_of_sensors += 1
 
 if msg_pressure2:    
-    msg2 = f'\nSensor {msg_pressure2.msgname.replace("SCALED_","")} dedicated'
+    msg2 = f'\nSensor {msg_pressure2.msgname.replace("SCALED_","")} dedecated'
     number_of_sensors += 1
 
 if msg_pressure3:    
-    msg3 = f'\nSensor {msg_pressure3.msgname.replace("SCALED_","")} dedicated'
+    msg3 = f'\nSensor {msg_pressure3.msgname.replace("SCALED_","")} dedecated'
     number_of_sensors += 1
 
 print(msg1 + msg2 + msg3)
 
 if number_of_sensors > 1 or number_of_sensors == 0:
-    result = f'{number_of_sensors} Sensors Dedicated'
+    result = f'{number_of_sensors} Sensors Dedecated'
 else:
-    result = f'{number_of_sensors} Sensor Dedicated'
+    result = f'{number_of_sensors} Sensor Dedecated'
 
 print(result)
