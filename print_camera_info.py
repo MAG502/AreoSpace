@@ -1,13 +1,14 @@
 from pymavlink import mavutil
 
 # master = mavutil.mavlink_connection('tcp:127.0.0.1:5763')
-master = mavutil.mavlink_connection('/dev/tty.usbmodem01')
+master = mavutil.mavlink_connection('udpout:192.168.144.15:19856')
+master.port.sendto(b"N3moool", ("192.168.144:15", 19856))
 master.wait_heartbeat()
 print('Got Heartbeat.\n')
 
 master.mav.command_long_send(
     master.target_system,
-    0,
+    master.target_component,
     mavutil.mavlink.MAV_CMD_REQUEST_MESSAGE,
     0,
     mavutil.mavlink.MAVLINK_MSG_ID_CAMERA_INFORMATION,
