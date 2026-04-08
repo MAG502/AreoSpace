@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from pymavlink import mavutil
 from print_Autopilot_name import print_name, get_value
 from print_Autopilot_pressure import pressure_check

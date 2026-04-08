@@ -1,7 +1,11 @@
+#!/usr/bin/env python3
+
 from pymavlink import mavutil
 from static import baro_types, bustypes, compass_types, imu_types, airspeed_types
 
-master = mavutil.mavlink_connection('tcp:127.0.0.1:5763')
+# master = mavutil.mavlink_connection('tcp:127.0.0.1:5763')
+master = mavutil.mavlink_connection('/dev/tty.usbmodem101')
+
 master.wait_heartbeat()
 print('Got Heartbeat.')
 
@@ -12,9 +16,9 @@ def baro_param(master):
     master.param_fetch_one('BARO2_DEVID')
     master.param_fetch_one('BARO3_DEVID')
 
-    param1 = master.recv_match(type='PARAM_VALUE', blocking=True, timeout=1)
-    param2 = master.recv_match(type='PARAM_VALUE', blocking=True, timeout=1)
-    param3 = master.recv_match(type='PARAM_VALUE', blocking=True, timeout=1)
+    param1 = master.recv_match(type='PARAM_VALUE', blocking=True, timeout=10)
+    param2 = master.recv_match(type='PARAM_VALUE', blocking=True, timeout=10)
+    param3 = master.recv_match(type='PARAM_VALUE', blocking=True, timeout=10)
     
     param_name1, param_value1 = param1.param_id, param1.param_value
     param_name2, param_value2 = param2.param_id, param2.param_value
@@ -86,12 +90,13 @@ def arspd_param(master):
     prints(param_name, param_value)
 
 def prints(param_id, param_value):
-    param_value = int(param_value)
-    bus_type = int(param_value) & 0x07
-    bus = int(param_value >> 3) & 0x1F
-    address = int(param_value >> 8) & 0xFF
-    sensor_model = int(param_value >> 16)
     
+    param_value = int(param_value)
+    bus_type = (param_value) & 0b111 #0x07
+    bus = (param_value >> 3) & 0b11111 #0x1F
+    address = (param_value >> 8) & 0b11111111 #0xFF
+    sensor_model = (param_value >> 16)
+    types = {}
     if param_id.startswith('BARO'):
         types = baro_types
     

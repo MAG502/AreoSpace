@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from pymavlink import mavutil
 
 # master = mavutil.mavlink_connection('/dev/tty.usbmodem1101')
